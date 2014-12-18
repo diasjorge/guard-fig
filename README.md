@@ -1,6 +1,6 @@
 # Guard::Fig
 
-TODO: Write a gem description
+Guard::Fig helps you develop docker containers faster using [fig](http://fig.sh/)
 
 ## Installation
 
