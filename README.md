@@ -20,7 +20,14 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Add the following to your Guardfile
+
+```
+guard :fig, boot2docker_start: true, build_on_start: true do
+  ignore %r{\.#}
+  watch %r{.*}
+end
+```
 
 ## Contributing
 
