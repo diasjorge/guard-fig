@@ -5,10 +5,12 @@ require "guard/fig/version"
 
 module ::Guard
   class Fig < Plugin
+    CONFIG_NAMES = ['fig.yml', 'fig.yaml', 'docker-compose.yml', 'docker-compose.yaml']
+
     def initialize(options = {})
       super(options)
-      @config = YAML.load_file('fig.yml')
-      @fig = FigProxy.new
+      @config = load_config
+      @fig = FigProxy.new(options)
     end
 
     def start
@@ -28,7 +30,7 @@ module ::Guard
     def run_on_changes(paths)
       debug paths.inspect
 
-      if paths.any? { |x| x =~ /fig\.yml/ }
+      if paths.any? { |x| x =~ Regexp.new(Regexp.escape(CONFIG_NAMES.join("|"))) }
         @fig.up
       else
         restart_services(paths)
@@ -77,6 +79,20 @@ module ::Guard
 
     def debug(msg)
       puts msg if ENV['DEBUG']
+    end
+
+    def load_config
+      config_file = CONFIG_NAMES.find do |file|
+        File.exist?(file)
+      end
+
+      if config_file
+        YAML.load_file(config_file)
+      else
+        puts "No file found with any name: #{CONFIG_NAMES.join(', ')}"
+        exit 1
+      end
+
     end
   end
 end

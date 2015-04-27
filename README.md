@@ -1,6 +1,6 @@
 # Guard::Fig
 
-Guard::Fig helps you develop docker containers faster using [fig](http://fig.sh/)
+Guard::Fig helps you develop docker containers faster using [fig](http://fig.sh/) and [docker-compose](https://github.com/docker/compose)
 
 ## Installation
 
@@ -23,7 +23,7 @@ Or install it yourself as:
 Add the following to your Guardfile
 
 ```
-guard :fig, boot2docker_start: true, build_on_start: true do
+guard :fig, boot2docker_start: true, build_on_start: true, command: 'fig' do
   ignore %r{\.#}
   watch %r{.*}
 end
